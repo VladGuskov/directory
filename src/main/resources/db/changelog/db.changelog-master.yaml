@@ -1,0 +1,547 @@
+databaseChangeLog:
+  - logicalFilePath: db/changelog/db.changelog-lesson1.yaml
+  - changeSet:
+      id: 1
+      author: vlad_guskov
+      changes:
+        - createSequence:
+            cycle: true
+            incrementBy: 1
+            maxValue: 100
+            minValue: 1
+            schemaName: public
+            sequenceName: department_seq
+            startValue: 1
+  - changeSet:
+      id: 2
+      author: vlad_guskov
+      changes:
+        - createTable:
+            tableName: department
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: nextval('department_seq')
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_node
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number_of_employees
+                  type: integer
+                  constraints:
+                    nullable: false
+              - column:
+                  name: parent_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_parent_department
+                    references: department(id)
+  - changeSet:
+      id: 3
+      author: vlad_guskov
+      changes:
+        - createSequence:
+            cycle: true
+            incrementBy: 1
+            maxValue: 100
+            minValue: 1
+            schemaName: public
+            sequenceName: employee_seq
+            startValue: 1
+  - changeSet:
+      id: 4
+      author: vlad_guskov
+      changes:
+        - createTable:
+            tableName: employee
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueComputed: nextval('employee_seq')
+                  constraints:
+                    primaryKey: true
+                    unique: true
+                    nullable: false
+              - column:
+                  name: is_fired
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: department_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_department_id
+                    references: department(id)
+  - changeSet:
+      id: 5
+      author: vlad_guskov
+      changes:
+        - createIndex:
+            tableName: department
+            indexName: idx_by_department
+            schemaName: public
+            unique: true
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  descending: false
+  - changeSet:
+      id: 6
+      author: vlad_guskov
+      changes:
+        - createIndex:
+            tableName: department
+            indexName: idx_by_name
+            schemaName: public
+            columns:
+              - column:
+                  name: name
+                  type: varchar(255)
+                  descending: false
+  - changeSet:
+      id: 7
+      author: vlad_guskov
+      changes:
+        - createIndex:
+            tableName: department
+            indexName: idx_by_parent_id
+            schemaName: public
+            columns:
+              - column:
+                  name: parent_id
+                  type: BIGINT
+                  descending: false
+  - changeSet:
+      id: 8
+      author: vlad_guskov
+      changes:
+        - createIndex:
+            tableName: employee
+            indexName: idx_by_employee
+            schemaName: public
+            unique: true
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  descending: false
+  - changeSet:
+      id: 9
+      author: vlad_guskov
+      changes:
+        - createIndex:
+            tableName: employee
+            indexName: idx_by_department_id
+            schemaName: public
+            columns:
+              - column:
+                  name: department_id
+                  type: BIGINT
+                  descending: false
+  - changeSet:
+      id: 10
+      author: vlad_guskov
+      changes:
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Земля"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 14
+              - column:
+                  name: parent_id
+                  value: null
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Евразия"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 7
+              - column:
+                  name: parent_id
+                  value: 1
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Африка"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 4
+              - column:
+                  name: parent_id
+                  value: 1
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Австралия"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 2
+              - column:
+                  name: parent_id
+                  value: 1
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Россия"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 3
+              - column:
+                  name: parent_id
+                  value: 2
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Китай"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 2
+              - column:
+                  name: parent_id
+                  value: 2
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Испания"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 2
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Египет"
+              - column:
+                  name: is_node
+                  value: true
+              - column:
+                  name: number_of_employees
+                  value: 2
+              - column:
+                  name: parent_id
+                  value: 3
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Нигерия"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 3
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Канберра"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 4
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Москва"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 5
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Санкт-Петербург"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 5
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Пекин"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 6
+        - insert:
+            tableName: department
+            columns:
+              - column:
+                  name: name
+                  value: "Кемер"
+              - column:
+                  name: is_node
+                  value: false
+              - column:
+                  name: number_of_employees
+                  value: 1
+              - column:
+                  name: parent_id
+                  value: 8
+  - changeSet:
+      id: 11
+      author: vlad_guskov
+      changes:
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Москвы"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 11
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Питера"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 12
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Пекина"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 13
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Кемера"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 14
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник России"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 5
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Китая"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 6
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Испании"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 7
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Египта"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 8
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Нигерии"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 9
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Канберры"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 10
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Евразии"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 2
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Африки"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 3
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Австралии"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 4
+        - insert:
+            tableName: employee
+            columns:
+              - column:
+                  name: name
+                  value: "Работник Земли"
+              - column:
+                  name: is_fired
+                  value: false
+              - column:
+                  name: department_id
+                  value: 1
